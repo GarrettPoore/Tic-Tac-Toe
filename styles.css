@@ -2,11 +2,28 @@ body {
   text-align: center;
 }
 
-#board {
-  background: red;
-  width: 40%;
+#main {
+  font-size: 48pt;
+  width: 10em;
   margin: auto;
-  padding: 1em;
+  background: cyan;
+  padding: 5px;
+}
+
+#player_select_container {
+  font-size: 16pt;
+}
+
+#character_select_container {
+  display: none;
+  font-size: 16pt;
+}
+
+#board {
+  display: none;
+  background: red;
+  margin: auto;
+  width: 9em;
 }
 
 .space {

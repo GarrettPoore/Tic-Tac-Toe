@@ -2,6 +2,8 @@
 // user chooses 1 or 2 players
 // if 1 player:
 //   choose X or O
+// if 2 player:
+//  player 1: choose X or O
 // randomly determine first
 
 
@@ -15,12 +17,14 @@ var currentTurn = ""; //X or O for current turn
 var player = ""; //X or O for player (uneeded in 2 player game)
 var versusAI = false;
 
+function isPlayerTurn() {
+  
+}
+
 function checkForWinner() {
 
 }
 
 function makeMove(space) {
-  if (versusAI && player != currentTurn) {
-    return;
-  }
+
 }

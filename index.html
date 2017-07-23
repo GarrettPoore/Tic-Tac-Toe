@@ -18,16 +18,28 @@
 
   <body>
     <h1>Tic Tac Toe</h1>
-    <div id="board">
-      <button type="button" value="7" class="space"></button>
-      <button type="button" value="8" class="space"></button>
-      <button type="button" value="9" class="space"></button>
-      <button type="button" value="4" class="space"></button>
-      <button type="button" value="5" class="space"></button>
-      <button type="button" value="6" class="space"></button>
-      <button type="button" value="1" class="space"></button>
-      <button type="button" value="2" class="space"></button>
-      <button type="button" value="3" class="space"></button>
+    <div id="main">
+      <div id="player_select_container">
+        How many players are there?
+        <button type="button" value="1" class="player_select">One Player</button>
+        <button type="button" value="2" class="player_select">Two Players</button>
+      </div>
+      <div id="character_select_container">
+        <div id="ask_character">Choose X or O:</div>
+        <button type="button" value="X" class="character_select">X</button>
+        <button type="button" value="O" class="character_select">O</button>
+      </div>
+      <div id="board">
+        <button type="button" value="7" class="space"></button>
+        <button type="button" value="8" class="space"></button>
+        <button type="button" value="9" class="space"></button>
+        <button type="button" value="4" class="space"></button>
+        <button type="button" value="5" class="space"></button>
+        <button type="button" value="6" class="space"></button>
+        <button type="button" value="1" class="space"></button>
+        <button type="button" value="2" class="space"></button>
+        <button type="button" value="3" class="space"></button>
+      </div>
     </div>
   </body>
 </html>

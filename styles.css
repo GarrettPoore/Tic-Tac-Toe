@@ -10,13 +10,25 @@ body {
   padding: 5px;
 }
 
+#heading {
+  font-size: 24pt;
+}
+
 #player_select_container {
   font-size: 16pt;
+}
+
+#ask_character {
+  display: none;
 }
 
 #character_select_container {
   display: none;
   font-size: 16pt;
+}
+
+#current_turn {
+  display: none;
 }
 
 #board {

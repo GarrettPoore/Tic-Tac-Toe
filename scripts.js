@@ -2,21 +2,27 @@ $(document).ready(function() {
   console.log("test");
   $(".player_select").click(function(event) {
     var val = event.target.value;
-    console.log("Clicked player " + val);
+    data.noOfPlayers = val;
 
-    //TODO - do stuff
+    if (val == 2) {
+      $("#ask_character").prepend("Player 1 - ");
+    }
 
+    $("#ask_players").hide();
     $("#player_select_container").hide();
+    $("#ask_character").show();
     $("#character_select_container").show();
   });
 
   $(".character_select").click(function(event) {
     var val = event.target.value;
-    console.log("Clicked character " + val);
+    data.player1 = val;
 
-    //TODO - do stuff
-
+    pickFirstTurn();
+    
+    $("#ask_character").hide();
     $("#character_select_container").hide();
+    $("#current_turn").show();
     $("#board").show();
   });
 

@@ -1,11 +1,12 @@
 $(document).ready(function() {
-  console.log("test");
   $(".player_select").click(function(event) {
     var val = event.target.value;
-    data.noOfPlayers = val;
 
     if (val == 2) {
       $("#ask_character").prepend("Player 1 - ");
+      data.versusAI = false;
+    } else {
+      data.versusAI = true;
     }
 
     $("#ask_players").hide();
@@ -19,7 +20,7 @@ $(document).ready(function() {
     data.player1 = val;
 
     pickFirstTurn();
-    
+
     $("#ask_character").hide();
     $("#character_select_container").hide();
     $("#current_turn").show();
@@ -29,8 +30,13 @@ $(document).ready(function() {
   $(".space").click(function(event) {
     var val = event.target.value;
 
-    if (isPlayerTurn()) {
-      makeMove(val);
+    if (this.text == null) {
+      if (isPlayerTurn()) {
+        placeMove(val);
+        if (data.versusAI) {
+          aiPlay();
+        }
+      }
     }
   });
 });

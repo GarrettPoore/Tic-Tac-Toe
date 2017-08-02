@@ -13,7 +13,6 @@
 // 4 | 5 | 6
 // 1 | 2 | 3
 var data = {};
-data.noOfPlayers = 0;
 data.lastWin = null;
 data.board = ["","","","","","","","","",""];
 data.currentTurn = ""; //X or O for current turn
@@ -32,6 +31,10 @@ function pickFirstTurn() {
   } else {
     updateCurrentTurn("X");
   }
+
+  if (!isPlayerTurn()) {
+    aiPlay();
+  }
 }
 
 function updateCurrentTurn(player) {
@@ -40,13 +43,36 @@ function updateCurrentTurn(player) {
 }
 
 function isPlayerTurn() {
-
+  return (!data.versusAI || data.player1 == data.currentTurn);
 }
 
 function checkForWinner() {
-
+  console.log("Checking for winner");
 }
 
-function makeMove(space) {
+function changeTurn() {
+  if (data.currentTurn == "X") {
+    updateCurrentTurn("O");
+  } else {
+    updateCurrentTurn("X");
+  }
+}
 
+//Board Functions
+function placeMove(space) {
+  $('.space[value="' + space + '"]').text(data.currentTurn);
+  checkForWinner();
+  changeTurn();
+}
+
+function resetBoard() {
+  $(".space").each(function(){
+    $(this).text(null);
+  });
+}
+
+//AI Functions
+function aiPlay() {
+  console.log("AI is playing");
+  changeTurn()
 }

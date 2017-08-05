@@ -14,7 +14,7 @@
 // 1 | 2 | 3
 var data = {};
 data.lastWin = null;
-data.board = ["","","","","","","","","",""];
+data.board = ["","","","","","","","",""];
 data.currentTurn = ""; //X or O for current turn
 data.player1 = ""; //X or O for player (uneeded in 2 player game)
 data.versusAI = false;
@@ -46,7 +46,31 @@ function isPlayerTurn() {
   return (!data.versusAI || data.player1 == data.currentTurn);
 }
 
-function checkForWinner() {
+function endTurn() {
+  //if (checkForWinner(data.board)) {}
+  if (false) {
+    //TODO - winner stuff
+    console.log("We have a winner");
+  } else if (checkForDraw()) {
+    //TODO - draw game properly
+    resetBoard();
+  } else {
+    changeTurn();
+  }
+}
+
+function checkForDraw() {
+  for (var i = 0; i < data.board.length; i++) {
+    if (data.board[i] === "") {
+      return false;
+    }
+  }
+  return true;
+}
+
+function checkForWinner(board) {
+  //TODO - find winner based on the board given
+  //   return the winner?
   console.log("Checking for winner");
 }
 
@@ -59,20 +83,26 @@ function changeTurn() {
 }
 
 //Board Functions
+function getSpace(spaceNum) {
+  return $('.space[value="' + spaceNum + '"]');
+}
+
 function placeMove(space) {
-  $('.space[value="' + space + '"]').text(data.currentTurn);
-  checkForWinner();
-  changeTurn();
+  getSpace(space).text(data.currentTurn);
+  data.board[space-1] = data.currentTurn;
+  endTurn();
 }
 
 function resetBoard() {
   $(".space").each(function(){
     $(this).text(null);
   });
+  data.board = ["","","","","","","","",""];
 }
 
 //AI Functions
 function aiPlay() {
+  //TODO - make ai
   console.log("AI is playing");
-  changeTurn()
+  endTurn();
 }

@@ -12,6 +12,10 @@
 // 7 | 8 | 9
 // 4 | 5 | 6
 // 1 | 2 | 3
+//Or as indexed in data.board
+// 6 | 7 | 8
+// 3 | 4 | 5
+// 0 | 1 | 2
 var data = {};
 data.lastWin = null;
 data.board = ["","","","","","","","",""];
@@ -47,10 +51,10 @@ function isPlayerTurn() {
 }
 
 function endTurn() {
-  //if (checkForWinner(data.board)) {}
-  if (false) {
+  if (checkForWinner(data.board, data.currentTurn)) {
     //TODO - winner stuff
-    console.log("We have a winner");
+    console.log("We have a winner: " + data.currentTurn);
+    resetBoard();
   } else if (checkForDraw()) {
     //TODO - draw game properly
     resetBoard();
@@ -68,10 +72,20 @@ function checkForDraw() {
   return true;
 }
 
-function checkForWinner(board) {
-  //TODO - find winner based on the board given
-  //   return the winner?
-  console.log("Checking for winner");
+//This method will check each combination of wins for given board and letter
+//and return true or false
+// 6 | 7 | 8
+// 3 | 4 | 5
+// 0 | 1 | 2
+function checkForWinner(bo, le) {
+  return (bo[0] == le && bo[1] == le && bo[2] == le) || //Bottom Row
+    (bo[3] == le && bo[4] == le && bo[5] == le) || //Middle Row
+    (bo[6] == le && bo[7] == le && bo[8] == le) || //Top Row
+    (bo[0] == le && bo[3] == le && bo[6] == le) || //Left Column
+    (bo[1] == le && bo[4] == le && bo[7] == le) || //Middle Column
+    (bo[2] == le && bo[5] == le && bo[8] == le) || //Right Column
+    (bo[0] == le && bo[4] == le && bo[8] == le) || //Diagonal Bottom-Left to Top-Right
+    (bo[2] == le && bo[4] == le && bo[6] == le) //Diagonal Top-Left to Bottom-Right
 }
 
 function changeTurn() {
@@ -98,6 +112,7 @@ function resetBoard() {
     $(this).text(null);
   });
   data.board = ["","","","","","","","",""];
+  changeTurn();
 }
 
 //AI Functions

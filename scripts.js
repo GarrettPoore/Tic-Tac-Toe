@@ -30,7 +30,7 @@ $(document).ready(function() {
   $(".space").click(function(event) {
     var val = event.target.value;
 
-    if (this.text == null) {
+    if (data.board[val-1] === "") {
       if (isPlayerTurn()) {
         placeMove(val);
         if (data.versusAI) {

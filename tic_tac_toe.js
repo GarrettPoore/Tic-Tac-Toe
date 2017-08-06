@@ -20,7 +20,8 @@ var data = {};
 data.lastWin = null;
 data.board = ["","","","","","","","",""];
 data.currentTurn = ""; //X or O for current turn
-data.player1 = ""; //X or O for player (uneeded in 2 player game)
+data.player1 = ""; //X or O for player
+data.player2 = ""; //Mainly so the AI can track what it is
 data.versusAI = false;
 
 function pickFirstTurn() {
@@ -50,6 +51,14 @@ function isPlayerTurn() {
   return (!data.versusAI || data.player1 == data.currentTurn);
 }
 
+function notCharacter(c) {
+  if (c == "X") {
+    return "O";
+  } else {
+    return "X";
+  }
+}
+
 function endTurn() {
   if (checkForWinner(data.board, data.currentTurn)) {
     //TODO - winner stuff
@@ -59,6 +68,7 @@ function endTurn() {
     //TODO - draw game properly
     resetBoard();
   } else {
+    console.log("Passing turn");
     changeTurn();
   }
 }
@@ -101,10 +111,28 @@ function getSpace(spaceNum) {
   return $('.space[value="' + spaceNum + '"]');
 }
 
+function getBoardCopy() {
+  return data.board.slice();
+}
+
+function getAvailableSpaces() {
+  var available = [];
+  data.board.forEach(function(space, i){
+    if (space === "") {
+      available.push(i);
+    }
+  });
+  return available;
+}
+
 function placeMove(space) {
+  console.log("Placing move " + data.currentTurn + " on " + space);
   getSpace(space).text(data.currentTurn);
   data.board[space-1] = data.currentTurn;
-  endTurn();
+}
+
+function placeMoveByIndex(index) {
+  placeMove(index + 1);
 }
 
 function resetBoard() {
@@ -113,11 +141,4 @@ function resetBoard() {
   });
   data.board = ["","","","","","","","",""];
   changeTurn();
-}
-
-//AI Functions
-function aiPlay() {
-  //TODO - make ai
-  console.log("AI is playing");
-  endTurn();
 }

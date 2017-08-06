@@ -18,6 +18,7 @@ $(document).ready(function() {
   $(".character_select").click(function(event) {
     var val = event.target.value;
     data.player1 = val;
+    data.player2 = notCharacter(val);
 
     pickFirstTurn();
 
@@ -33,6 +34,7 @@ $(document).ready(function() {
     if (data.board[val-1] === "") {
       if (isPlayerTurn()) {
         placeMove(val);
+        endTurn();
         if (data.versusAI) {
           aiPlay();
         }

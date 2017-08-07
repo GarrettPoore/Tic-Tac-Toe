@@ -111,8 +111,8 @@ function getSpace(spaceNum) {
   return $('.space[value="' + spaceNum + '"]');
 }
 
-function getBoardCopy() {
-  return data.board.slice();
+function getBoardCopy(board) {
+  return board.slice();
 }
 
 function getAvailableSpaces() {

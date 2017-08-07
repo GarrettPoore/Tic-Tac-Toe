@@ -18,8 +18,9 @@ function aiPlay() {
 //All of the below functions will try to complete an action for the ai
 //and return true if they did, or false if they did nothing
 
+//Win the game
 function aiWin() {
-  var moves = getWinningMoves(data.player2);
+  var moves = getWinningMoves(data.board, data.player2);
   if (moves.length > 0) {
     var move = pickRandomSpace(moves);
     console.log("Winning at index " + move);
@@ -29,8 +30,9 @@ function aiWin() {
   return false;
 }
 
+//Block the enemy from winning
 function aiBlock() {
-  var moves = getWinningMoves(data.player1);
+  var moves = getWinningMoves(data.board, data.player1);
   if (moves.length > 0) {
     var move = pickRandomSpace(moves);
     console.log("Blocking at index " + move);
@@ -40,24 +42,47 @@ function aiBlock() {
   return false;
 }
 
+//Create a fork
+//A fork is a situation where you can get 2 winning moves
 function aiFork() {
   var spaces = getAvailableSpaces();
+console.log(spaces);
   for (var i = 0; i < spaces.length; i++) {
-    var copyBaord = getBoardCopy();
+    var copyBoard = getBoardCopy(data.board);
     var space = spaces[i];
+    var player = data.player2;
 
-    //TODO
+    copyBoard[space] = player;
+    var moves = getWinningMoves(copyBoard, player);
+console.log(space);
+console.log(moves);
+    if (moves.length > 1) {
+      console.log("Fork at index " + space);
+      placeMoveByIndex(space);
+      return true;
+    }
   }
   return false;
 }
 
+//Block a fork
 function aiBlockFork() {
   var spaces = getAvailableSpaces();
+console.log(spaces);
   for (var i = 0; i < spaces.length; i++) {
-    var copyBaord = getBoardCopy();
+    var copyBoard = getBoardCopy(data.board);
     var space = spaces[i];
+    var player = data.player1;
 
-    //TODO
+    copyBoard[space] = player;
+    var moves = getWinningMoves(copyBoard, player);
+console.log(space);
+console.log(moves);
+    if (moves.length > 1) {
+      console.log("Blocking fork at index " + space);
+      placeMoveByIndex(space);
+      return true;
+    }
   }
   return false;
 }
@@ -86,7 +111,7 @@ function aiOpposingCorner() {
   });
 
   for (var i = 0; i < enemyCorners.length; i++) {
-    var copyBaord = getBoardCopy();
+    var copyBoard = getBoardCopy(data.board);
     var enemyCorner = enemyCorners[i];
     var oppositeCorner = null;
 
@@ -139,15 +164,15 @@ function aiDefault() {
 //Other Functions
 
 //Get all the winning moves for a specific player
-function getWinningMoves(player) {
+function getWinningMoves(board, player) {
   var spaces = getAvailableSpaces();
   var moves = [];
   for (var i = 0; i < spaces.length; i++) {
-    var copyBaord = getBoardCopy();
+    var copyBoard = getBoardCopy(board);
     var space = spaces[i];
 
-    copyBaord[space] = player;
-    if (checkForWinner(copyBaord, player)) {
+    copyBoard[space] = player;
+    if (checkForWinner(copyBoard, player)) {
       moves.push(space);
     }
   }

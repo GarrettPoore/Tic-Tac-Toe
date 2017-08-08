@@ -38,8 +38,13 @@ body {
   width: 9em;
 }
 
+#board_table {
+  margin: auto;
+}
+
 .space {
   margin: 5px;
+  display: block;
   font-size: 48pt;
   height: 2.5em;
   width: 2.5em;

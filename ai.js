@@ -45,44 +45,43 @@ function aiBlock() {
 //Create a fork
 //A fork is a situation where you can get 2 winning moves
 function aiFork() {
-  var spaces = getAvailableSpaces();
-console.log(spaces);
-  for (var i = 0; i < spaces.length; i++) {
-    var copyBoard = getBoardCopy(data.board);
-    var space = spaces[i];
-    var player = data.player2;
-
-    copyBoard[space] = player;
-    var moves = getWinningMoves(copyBoard, player);
-console.log(space);
-console.log(moves);
-    if (moves.length > 1) {
-      console.log("Fork at index " + space);
-      placeMoveByIndex(space);
-      return true;
-    }
+  var forks = getForkMoves(data.board, data.player2);
+  if (forks.length > 0) {
+    var move = pickRandomSpace(forks);
+    console.log("Fork at index " + move)
+    placeMoveByIndex(move);
+    return true;
   }
   return false;
 }
 
 //Block a fork
 function aiBlockFork() {
-  var spaces = getAvailableSpaces();
-console.log(spaces);
-  for (var i = 0; i < spaces.length; i++) {
-    var copyBoard = getBoardCopy(data.board);
-    var space = spaces[i];
-    var player = data.player1;
+  var forks = getForkMoves(data.board, data.player1);
+  if (forks.length == 1) {
+    var move = forks[0];
+    console.log("Blocking the only fork at " + move);
+    placeMoveByIndex(move);
+    return true;
+  } else if (forks.length > 1) {
+    //If there are multiple forks, then a threatening winning move must be found
+    //that does not let the enemy place a fork at the same time
+    var moves = [];
+    for (var i = 0; i < forks.length; i++) {
+      var copyBoard = getBoardCopy(data.board);
+      var space = forks[i];
 
-    copyBoard[space] = player;
-    var moves = getWinningMoves(copyBoard, player);
-console.log(space);
-console.log(moves);
-    if (moves.length > 1) {
-      console.log("Blocking fork at index " + space);
-      placeMoveByIndex(space);
-      return true;
+      copyBoard[space] = data.player2;
+      var wins = getWinningMoves(copyBoard, data.player2)
+      if (wins.length > 0) {
+        moves.push(space);
+      }
     }
+
+    var move = pickRandomSpace(moves);
+    console.log("Blocking fork by threatening win at index " + move);
+    placeMoveByIndex(move);
+    return true;
   }
   return false;
 }
@@ -163,7 +162,7 @@ function aiDefault() {
 
 //Other Functions
 
-//Get all the winning moves for a specific player
+//Get all the winning moves for a specific player and board state
 function getWinningMoves(board, player) {
   var spaces = getAvailableSpaces();
   var moves = [];
@@ -177,6 +176,23 @@ function getWinningMoves(board, player) {
     }
   }
   return moves;
+}
+
+//Get all possible forks for a specific player and board state
+function getForkMoves(board, player) {
+  var spaces = getAvailableSpaces();
+  var forks = [];
+  for (var i = 0; i < spaces.length; i++) {
+    var copyBoard = getBoardCopy(data.board);
+    var space = spaces[i];
+
+    copyBoard[space] = player;
+    var moves = getWinningMoves(copyBoard, player);
+    if (moves.length > 1) {
+      forks.push(space);
+    }
+  }
+  return forks;
 }
 
 //Returns a random spaces from an array of spaces

@@ -1,13 +1,22 @@
 body {
+  color: #c2c9d3;
   text-align: center;
+  background: #364a68;
+}
+
+h1 {
+  margin-top: -1px;
+  margin-bottom: 5px;
 }
 
 #main {
   font-size: 48pt;
+  background: #2e343d;
   width: 10em;
-  margin: auto;
-  background: cyan;
+  border-radius: 1em;
+  box-shadow: inset 5px 5px 5px #0d0e11, 2px 2px 2px #343c47, 5px 5px 5px #434c5b, 5px 5px 2px #243247;
   padding: 5px;
+  margin: auto;
 }
 
 #heading {
@@ -29,23 +38,62 @@ body {
 
 #current_turn {
   display: none;
+  width: 10em;
+}
+
+#X_score{
+  margin-left: 1em;
+}
+
+.score {
+  display: none;
+  width: 4em;
+  text-align: left;
 }
 
 #board {
   display: none;
-  background: red;
+  background: #2b1f38;
+  width: 8.25em;
+  height: 0em;
+  border-radius: 15px;
+  box-shadow: inset 3px 3px 3px #6b5384, inset 3px 3px 3px #3f304f, 3px 3px #1f1628, 3px 3px 3px #000000;
+  padding: 5px;
   margin: auto;
-  width: 9em;
+  margin-top: 10px;
+  margin-bottom: -25px;
 }
 
 #board_table {
   margin: auto;
 }
 
+#reset {
+  display: none;
+}
+
+#end_game {
+  display: none;
+  position: absolute;
+  color: #68998d;
+  text-shadow: -1px 0 #12755e, 0 1px #12755e, 1px 0 #12755e, 0 -1px #12755e;
+  font-size: 48pt;
+  top: 5em;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
 .space {
-  margin: 5px;
   display: block;
+  background: #11705b;
+  color: #c2c9d3;
   font-size: 48pt;
   height: 2.5em;
   width: 2.5em;
+  margin: 5px;
+  box-shadow: inset 5px 5px #0a4437;
+  text-decoration: none;
+  border: none;
+  outline: none;
 }

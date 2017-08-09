@@ -1,10 +1,5 @@
-//TODO:
-// user chooses 1 or 2 players
-// if 1 player:
-//   choose X or O
-// if 2 player:
-//  player 1: choose X or O
-// randomly determine first
+//TODO: keep score
+//TODO: restart button
 
 
 
@@ -16,13 +11,23 @@
 // 6 | 7 | 8
 // 3 | 4 | 5
 // 0 | 1 | 2
-var data = {};
-data.lastWin = null;
-data.board = ["","","","","","","","",""];
-data.currentTurn = ""; //X or O for current turn
-data.player1 = ""; //X or O for player
-data.player2 = ""; //Mainly so the AI can track what it is
-data.versusAI = false;
+var data = initData();
+
+function initData() {
+  var d = {};
+  d.lastWin = null;
+  d.board = ["","","","","","","","",""];
+  d.currentTurn = ""; //X or O for current turn
+  d.player1 = ""; //X or O for player
+  d.player2 = ""; //Mainly so the AI can track what it is
+  d.score = {
+    X: 0,
+    O: 0
+  }
+  d.pause = false;
+  d.versusAI = false;
+  return d;
+}
 
 function pickFirstTurn() {
   if (data.lastWin == null) {
@@ -63,13 +68,38 @@ function endTurn() {
   if (checkForWinner(data.board, data.currentTurn)) {
     //TODO - winner stuff
     console.log("We have a winner: " + data.currentTurn);
-    resetBoard();
+    data.pause = true;
+    adjustScore(data.currentTurn);
+    $("#end_game").text(data.currentTurn + " wins!").fadeIn(500);
+    $("#main").animate({opacity: "0.2"}, {
+      duration: 500,
+      queue: false,
+      complete: function() {
+        setTimeout(resetBoard, 3000);
+      }
+    });
   } else if (checkForDraw()) {
-    //TODO - draw game properly
-    resetBoard();
+    console.log("Game is a draw");
+    $("#end_game").text("Draw!").fadeIn(500);
+    $("#main").animate({opacity: "0.2"}, {
+      duration: 500,
+      queue: false,
+      complete: function() {
+        setTimeout(resetBoard, 3000);
+      }
+    });
   } else {
     console.log("Passing turn");
     changeTurn();
+  }
+}
+
+function adjustScore(winner) {
+  data.score[winner] += 1;
+  if (winner ==  "X") {
+    $("#X_score").text("X: " + data.score.X)
+  } else {
+    $("#O_score").text("O: " + data.score.O)
   }
 }
 
@@ -136,6 +166,8 @@ function placeMoveByIndex(index) {
 }
 
 function resetBoard() {
+  $("#end_game").fadeOut(500, function(){data.pause = false;});
+  $("#main").animate({opacity: "1"}, 500)
   $(".space").each(function(){
     $(this).text(null);
   });

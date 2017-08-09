@@ -9,10 +9,12 @@ $(document).ready(function() {
       data.versusAI = true;
     }
 
-    $("#ask_players").hide();
-    $("#player_select_container").hide();
-    $("#ask_character").show();
-    $("#character_select_container").show();
+    $("#ask_players").fadeOut(200, function(){
+      $("#ask_character").fadeIn(200);
+    });
+    $("#player_select_container").fadeOut(200, function(){
+      $("#character_select_container").fadeIn(200);
+    });
   });
 
   $(".character_select").click(function(event) {
@@ -22,15 +24,23 @@ $(document).ready(function() {
 
     pickFirstTurn();
 
-    $("#ask_character").hide();
-    $("#character_select_container").hide();
-    $("#current_turn").show();
-    $("#board").show();
+    $("#ask_character").fadeOut(400, function(){
+      $("#current_turn").css("display", "inline-block");
+      $(".score").css("display", "inline-block");
+    });
+    $("#character_select_container").fadeOut(200, function(){
+      $("#board").show().animate({height: "8.2em"}, {
+        duration: 600,
+        complete: function(){
+          $("#reset").fadeIn();
+        }
+      });
+    });
   });
 
   $(".space").click(function(event) {
     var val = event.target.value;
-
+    if (data.pause) {return null;}
     if (data.board[val-1] === "") {
       if (isPlayerTurn()) {
         placeMove(val);
@@ -40,5 +50,26 @@ $(document).ready(function() {
         }
       }
     }
+  });
+
+  $("#reset").click(function(){
+    resetBoard();
+    data = initData();
+    $("#reset").fadeOut(400, function(){
+      $("#board").animate({height: "0"},{
+        duration: 600,
+        complete: function() {
+          $("#board").hide();
+          $(".score").fadeOut(400, function(){
+            $("#X_score").text("X: 0");
+            $("#O_score").text("O: 0");
+          });
+          $("#current_turn").fadeOut(400, function(){
+            $("#ask_players").fadeIn();
+            $("#player_select_container").fadeIn();
+          });
+        }
+      })
+    });
   });
 });

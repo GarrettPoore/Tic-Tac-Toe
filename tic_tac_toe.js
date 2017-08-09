@@ -1,8 +1,3 @@
-//TODO: keep score
-//TODO: restart button
-
-
-
 //Board is as follows:
 // 7 | 8 | 9
 // 4 | 5 | 6
@@ -15,7 +10,6 @@ var data = initData();
 
 function initData() {
   var d = {};
-  d.lastWin = null;
   d.board = ["","","","","","","","",""];
   d.currentTurn = ""; //X or O for current turn
   d.player1 = ""; //X or O for player
@@ -30,17 +24,11 @@ function initData() {
 }
 
 function pickFirstTurn() {
-  if (data.lastWin == null) {
     if (Math.random() > 0.5) {
       updateCurrentTurn("X");
     } else {
       updateCurrentTurn("O");
     }
-  } else if (data.lastWin == "X") {
-    updateCurrentTurn("O");
-  } else {
-    updateCurrentTurn("X");
-  }
 
   if (!isPlayerTurn()) {
     aiPlay();
@@ -66,8 +54,6 @@ function notCharacter(c) {
 
 function endTurn() {
   if (checkForWinner(data.board, data.currentTurn)) {
-    //TODO - winner stuff
-    console.log("We have a winner: " + data.currentTurn);
     data.pause = true;
     adjustScore(data.currentTurn);
     $("#end_game").text(data.currentTurn + " wins!").fadeIn(500);
@@ -79,7 +65,7 @@ function endTurn() {
       }
     });
   } else if (checkForDraw()) {
-    console.log("Game is a draw");
+    data.pause = true;
     $("#end_game").text("Draw!").fadeIn(500);
     $("#main").animate({opacity: "0.2"}, {
       duration: 500,
@@ -88,10 +74,9 @@ function endTurn() {
         setTimeout(resetBoard, 3000);
       }
     });
-  } else {
-    console.log("Passing turn");
-    changeTurn();
   }
+
+  changeTurn();
 }
 
 function adjustScore(winner) {
@@ -134,6 +119,7 @@ function changeTurn() {
   } else {
     updateCurrentTurn("X");
   }
+  aiPlay();
 }
 
 //Board Functions
@@ -156,7 +142,6 @@ function getAvailableSpaces() {
 }
 
 function placeMove(space) {
-  console.log("Placing move " + data.currentTurn + " on " + space);
   getSpace(space).text(data.currentTurn);
   data.board[space-1] = data.currentTurn;
 }
@@ -166,11 +151,13 @@ function placeMoveByIndex(index) {
 }
 
 function resetBoard() {
-  $("#end_game").fadeOut(500, function(){data.pause = false;});
+  $("#end_game").fadeOut(500, function(){
+    data.pause = false;
+    aiPlay();
+  });
   $("#main").animate({opacity: "1"}, 500)
   $(".space").each(function(){
     $(this).text(null);
   });
   data.board = ["","","","","","","","",""];
-  changeTurn();
 }

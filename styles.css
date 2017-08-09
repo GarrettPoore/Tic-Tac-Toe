@@ -1,12 +1,17 @@
 body {
   color: #c2c9d3;
-  text-align: center;
   background: #364a68;
+  text-align: center;
 }
 
 h1 {
   margin-top: -1px;
   margin-bottom: 5px;
+}
+
+button {
+  color: #c2c9d3;
+  background: #2b1f38;
 }
 
 #main {
@@ -70,6 +75,7 @@ h1 {
 
 #reset {
   display: none;
+  background: #8c1919;
 }
 
 #end_game {

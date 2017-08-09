@@ -4,15 +4,17 @@ var CORNERS = [0, 2, 6, 8]
 function aiPlay() {
   //Order of possible plays taken from Wikipedia:
   //https://en.wikipedia.org/wiki/Tic-tac-toe#Strategy
-  if (aiWin()) {}
-  else if (aiBlock()) {}
-  else if (aiFork()) {}
-  else if (aiBlockFork()) {}
-  else if (aiCenter()) {}
-  else if (aiOpposingCorner()) {}
-  else if (aiCorner()) {}
-  else {aiDefault();}
-  endTurn();
+  if (!isPlayerTurn() && !data.pause) {
+    if (aiWin()) {}
+    else if (aiBlock()) {}
+    else if (aiFork()) {}
+    else if (aiBlockFork()) {}
+    else if (aiCenter()) {}
+    else if (aiOpposingCorner()) {}
+    else if (aiCorner()) {}
+    else {aiDefault();}
+    endTurn();
+  }
 }
 
 //All of the below functions will try to complete an action for the ai
@@ -23,7 +25,6 @@ function aiWin() {
   var moves = getWinningMoves(data.board, data.player2);
   if (moves.length > 0) {
     var move = pickRandomSpace(moves);
-    console.log("Winning at index " + move);
     placeMoveByIndex(move);
     return true;
   }
@@ -35,7 +36,6 @@ function aiBlock() {
   var moves = getWinningMoves(data.board, data.player1);
   if (moves.length > 0) {
     var move = pickRandomSpace(moves);
-    console.log("Blocking at index " + move);
     placeMoveByIndex(move);
     return true;
   }
@@ -48,7 +48,6 @@ function aiFork() {
   var forks = getForkMoves(data.board, data.player2);
   if (forks.length > 0) {
     var move = pickRandomSpace(forks);
-    console.log("Fork at index " + move)
     placeMoveByIndex(move);
     return true;
   }
@@ -60,16 +59,20 @@ function aiBlockFork() {
   var forks = getForkMoves(data.board, data.player1);
   if (forks.length == 1) {
     var move = forks[0];
-    console.log("Blocking the only fork at " + move);
     placeMoveByIndex(move);
     return true;
   } else if (forks.length > 1) {
     //If there are multiple forks, then a threatening winning move must be found
     //that does not let the enemy place a fork at the same time
+    var spaces = getAvailableSpaces();
+    spaces = spaces.filter(function(space) {
+      return !forks.includes(space);
+    });
+
     var moves = [];
-    for (var i = 0; i < forks.length; i++) {
+    for (var i = 0; i < spaces.length; i++) {
       var copyBoard = getBoardCopy(data.board);
-      var space = forks[i];
+      var space = spaces[i];
 
       copyBoard[space] = data.player2;
       var wins = getWinningMoves(copyBoard, data.player2)
@@ -79,7 +82,6 @@ function aiBlockFork() {
     }
 
     var move = pickRandomSpace(moves);
-    console.log("Blocking fork by threatening win at index " + move);
     placeMoveByIndex(move);
     return true;
   }
@@ -92,7 +94,6 @@ function aiCenter() {
   var CENTER = 4;
 
   if (spaces.includes(CENTER)) {
-    console.log("Center at index " + CENTER);
     placeMoveByIndex(CENTER);
     return true;
   }
@@ -128,7 +129,6 @@ function aiOpposingCorner() {
         oppositeCorner = 0;
     }
     if (spaces.includes(oppositeCorner)) {
-      console.log("Blocking corner at index " + oppositeCorner);
       placeMoveByIndex(oppositeCorner);
       return true;
     }
@@ -145,7 +145,6 @@ function aiCorner() {
   if (corners.length > 0) {
     var space = pickRandomSpace(corners);
 
-    console.log("Corner at index " + space);
     placeMoveByIndex(space);
     return true;
   }
@@ -155,7 +154,6 @@ function aiCorner() {
 //Default to any open space
 function aiDefault() {
   var space = pickRandomSpace(getAvailableSpaces());
-  console.log("Defaulting at index " + space);
   placeMoveByIndex(space);
   return true;
 }

@@ -40,17 +40,30 @@ $(document).ready(function() {
 
   $(".space").click(function(event) {
     var val = event.target.value;
+    tryToPlay(val);
+  });
+
+  $(document).keypress(function(event){
+    //1-9 are 49-57
+    var key = event.which;
+    var num = key - 48;
+    if (num >= 1 && num <= 9) {
+      tryToPlay(num);
+    }
+  });
+
+  function tryToPlay(space) {
     if (data.pause) {return null;}
-    if (data.board[val-1] === "") {
+    if (data.board[space-1] === "") {
       if (isPlayerTurn()) {
-        placeMove(val);
+        placeMove(space);
         endTurn();
-        if (data.versusAI) {
+        if (data.versusAI && !data.pause) {
           aiPlay();
         }
       }
     }
-  });
+  }
 
   $("#reset").click(function(){
     resetBoard();
